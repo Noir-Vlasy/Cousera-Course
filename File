@@ -1,0 +1,30 @@
+#include <EEPROM.h>
+void setup() // Including the EEPROM Library Above
+{
+Serial.begin(9600); //Start Serial Monitor Interface
+}
+int address; // Intialize Address Variable
+int dataToWrite; // Variable to write Data
+
+void loop()
+{
+String buffer = "";
+buffer = Serial.readString(); // Buffer for Reading Data
+if(buffer.startsWith("read")) { // Reading the Input from serial monitor
+address = buffer.substring(buffer.indexOf(' ') +1).toInt(); // Address Logic
+Serial.print("Data from the Address : ");
+Serial.print(address);
+Serial.println();
+Serial.println(EEPROM.read(address)); // Prints the Values to the user on the serial monitor
+} else if(buffer.startsWith("write")) { // Reading Data If 1st condition is not true
+address = buffer.substring(6,7).toInt();
+dataToWrite = buffer.substring(8).toInt();
+Serial.print("Written ");
+Serial.print(dataToWrite); // Checking data to write to EEPROM
+Serial.println();
+Serial.print("to the Address: ");
+Serial.print(address);
+Serial.println();
+EEPROM.write(address,dataToWrite); // Writing data to the EEPROM
+}
+} // End of program
